@@ -1,0 +1,16 @@
+{
+    "legacy_addon_id": "",
+    "title": "ePayco Payment Integration",
+    "description": "Adds ePayCo as a supported payment method.",
+    "version_id": 1000170,
+    "version_string": "1.0.1",
+    "dev": "Laneros.com",
+    "dev_url": "https://www.laneros.com",
+    "faq_url": "",
+    "support_url": "https://www.laneros.com/misc/contact",
+    "extra_urls": {
+        "ePayco": "https://epayco.co"
+    },
+    "require": [],
+    "icon": "icon.png"
+}

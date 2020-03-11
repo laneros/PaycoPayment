@@ -1,0 +1,8 @@
+{
+  "additional_files": [
+    "js/PaycoPayment"
+  ],
+  "minify": [
+    "js/PaycoPayment/epayco.js"
+  ]
+}

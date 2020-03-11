@@ -1,0 +1,1 @@
+Paga {cost} con PSE

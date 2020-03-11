@@ -1,0 +1,158 @@
+<xf:css src="payment_initiate.less" />
+<xf:css src="card_js.css" />
+<xf:js src="PaycoPayment/bower_components/payform/dist/payform.min.js" addon="PaycoPayment" />
+<xf:js src="PaycoPayment/epayco.js" min="1" addon="PaycoPayment" />
+
+<xf:title>{{ phrase('enter_payment_details') }}</xf:title>
+
+<div class="blocks">
+	<xf:form action="{{ link('purchase/process', null, {'request_key': $purchaseRequest.request_key}) }}" class="block block--paymentInitiate" data-xf-init="epayco-payment-form" data-public-key="{$publicKey}">
+		<xf:hiddenval name="email" data-epayco="card[email]">{$purchaser.email}</xf:hiddenval>
+		<xf:hiddenval name="card-number" id="epayco-card-number" data-epayco="card[number]"></xf:hiddenval>
+		<xf:hiddenval name="card-month" id="epayco-card-month" data-epayco="card[exp_month]"></xf:hiddenval>
+		<xf:hiddenval name="card-year" id="epayco-card-year" data-epayco="card[exp_year]"></xf:hiddenval>
+		<div class="block-container">
+			<div class="block-body">
+				<xf:inforow id="card-errors-container" rowclass="u-hidden">
+					<div class="block-rowMessage block-rowMessage--error block-rowMessage--iconic u-hidden" id="card-errors"></div>
+				</xf:inforow>
+
+				<xf:formrow controlid="card-number-element" rowtype="input"
+							label="{{ phrase('pay_by_card') }}">
+					<dl class="formRow">
+						<dd style="padding-bottom: 0;">
+							<div class="inputGroup">
+								<div class="inputGroup-text"><span style="width: 30px;"><xf:fa icon="fa-lg fa-credit-card" id="brand-icon" /></span></div>
+								<xf:textbox class="input" id="card-number" placeholder="1234 1234 1234 1234" type="tel" maxlength="19" />
+								<div class="inputGroup-splitter"></div>
+								<xf:textbox id="card-expiry" class="input" style="width: 130px" placeholder="MM / AA" type="tel" maxlength="19" />
+								<div class="inputGroup-splitter"></div>
+								<xf:textbox id="card-cvc" class="input" data-epayco="card[cvc]" style="width: 75px" placeholder="CVC" type="tel" />
+							</div>
+						</dd>
+					</dl>
+					<dl class="formRow">
+						<dd style="padding-bottom: 0;">
+							<div class="inputGroup">
+								<div class="inputGroup-text"><span style="width: 30px;"><xf:fa icon="fa-lg fa-user" id="fullname-icon" /></span></div>
+								<xf:textbox name="first_name" class="input" data-epayco="card[name]" placeholder="NOMBRES" />
+								<div class="inputGroup-splitter"></div>
+								<xf:textbox name="last_name" class="input" placeholder="APELLIDOS" />
+							</div>
+						</dd>
+					</dl>
+					<dl class="formRow">
+						<dd style="padding-bottom: 0;">
+							<div class="inputGroup" style="padding-left: 36px;">
+								<xf:select name="id_type" class="input" style="width: 75px">
+									<xf:option value="CC">CC</xf:option>
+									<xf:option value="NIT">NIT</xf:option>
+									<xf:option value="CE">CE</xf:option>
+									<xf:option value="TI">TI</xf:option>
+									<xf:option value="PPN">PPN</xf:option>
+									<xf:option value="SSN">SSN</xf:option>
+									<xf:option value="LIC">LIC</xf:option>
+									<xf:option value="DNI">DNI</xf:option>
+								</xf:select>
+								<div class="inputGroup-splitter"></div>
+								<xf:textbox name="id_number" class="input" placeholder="NUMERO DE DOCUMENTO" />
+							</div>
+						</dd>
+					</dl>
+					<div class="formRow-explain">{{ phrase('payments_processed_securely_by_x', {'link': 'https://epayco.co', 'provider': 'ePayco'}) }}</div>
+				</xf:formrow>
+
+				<hr class="formRowSep" />
+
+				<xf:formrow label="" rowtype="button">
+					<xf:button type="submit" icon="payment">
+						{{ phrase('pay_x', {'cost': $purchase.cost|currency($purchase.currency)}) }}
+					</xf:button>
+				</xf:formrow>
+
+				<script type="application/json" class="js-formStyles">
+					{
+						"base": {
+							"color": "{{ parse_less_color(property('textColor', '#141414'))|escape('json') }}",
+							"fontFamily": "{{ property('fontFamilyUi')|escape('json') }}",
+							"fontSize": "16px"
+						},
+						"invalid": {
+							"color": "#c84448"
+						}
+					}
+				</script>
+			</div>
+		</div>
+	</xf:form>
+
+	<xf:if is="$bankList is not empty">
+		<xf:form action="{{ link('purchase/process', null, {'request_key': $purchaseRequest.request_key}) }}" class="block">
+			<xf:hiddenval name="pse">true</xf:hiddenval>
+			<div class="blocks-textJoiner"><span></span><em>{{ phrase('or_separator') }}</em><span></span></div>
+			<div class="block-container">
+				<div class="block-body">
+					<xf:formrow controlid="card-number-element" rowtype="input"
+								label="{{ phrase('paga_por_pse') }}">
+						<dl class="formRow">
+							<dd style="padding-bottom: 0;">
+								<div class="inputGroup">
+									<div class="inputGroup-text"><span style="width: 30px;"><xf:fa icon="fa-lg fa-credit-card" /></span></div>
+									<xf:select name="bank_id" class="input">
+										<xf:foreach loop="$bankList" value="$bank">
+											<xf:option value="{$bank.bankCode}">{$bank.bankName}</xf:option>
+										</xf:foreach>
+									</xf:select>
+								</div>
+							</dd>
+						</dl>
+						<dl class="formRow">
+							<dd style="padding-bottom: 0;">
+								<div class="inputGroup">
+									<div class="inputGroup-text"><span style="width: 30px;"><xf:fa icon="fa-lg fa-user" id="fullname-icon" /></span></div>
+									<xf:textbox name="first_name" class="input" placeholder="NOMBRES" />
+									<div class="inputGroup-splitter"></div>
+									<xf:textbox name="last_name" class="input" placeholder="APELLIDOS" />
+								</div>
+							</dd>
+						</dl>
+						<dl class="formRow">
+							<dd style="padding-bottom: 0;">
+								<div class="inputGroup">
+									<div class="inputGroup" style="padding-left: 36px;">
+									<xf:select name="id_type" class="input" style="width: 75px">
+										<xf:option value="CC">CC</xf:option>
+										<xf:option value="NIT">NIT</xf:option>
+										<xf:option value="CE">CE</xf:option>
+										<xf:option value="PPN">PPN</xf:option>
+										<xf:option value="SSN">SSN</xf:option>
+										<xf:option value="LIC">LIC</xf:option>
+										<xf:option value="DNI">DNI</xf:option>
+									</xf:select>
+									<div class="inputGroup-splitter"></div>
+									<xf:textbox name="id_number" class="input" placeholder="NUMERO DE DOCUMENTO" />
+									</div>
+								</div>
+							</dd>
+						</dl>
+						<dl class="formRow">
+							<dd style="padding-bottom: 0;">
+								<div class="inputGroup">
+									<div class="inputGroup" style="padding-left: 36px;">
+									<xf:textbox name="cell_phone" class="input" placeholder="CELULAR" maxlength="10" />
+									</div>
+								</div>
+							</dd>
+						</dl>
+					</xf:formrow>
+
+					<xf:formrow label="" rowtype="button">
+						<xf:button type="submit" icon="payment">
+							{{ phrase('paga_x_con_pse', {'cost': $purchase.cost|currency($purchase.currency)}) }}
+						</xf:button>
+					</xf:formrow>
+				</div>
+			</div>
+		</xf:form>
+	</xf:if>
+</div>

@@ -1,0 +1,1 @@
+Necesitas proporcionar tu llave pública y privada de ePayco

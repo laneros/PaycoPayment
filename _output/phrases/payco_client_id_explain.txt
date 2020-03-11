@@ -1,0 +1,1 @@
+Tu P_CUST_ID_CLIENTE en tu <a href="https://dashboard.epayco.co/clientes/configuracion" target="_blank">dashboard ePayco</a>.

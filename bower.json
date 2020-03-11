@@ -1,0 +1,15 @@
+{
+  "name": "PaycoPayment",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "payform": "^1.4.0"
+  }
+}

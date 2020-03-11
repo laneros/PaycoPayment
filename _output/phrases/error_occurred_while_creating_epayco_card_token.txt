@@ -1,0 +1,1 @@
+Ocurrió un error creando el token de tarjeta de crédito en ePayco.

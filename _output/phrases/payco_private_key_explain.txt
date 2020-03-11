@@ -1,0 +1,1 @@
+Tu PRIVATE_KEY en tu <a href="https://dashboard.epayco.co/clientes/configuracion" target="_blank">dashboard ePayco</a>.
