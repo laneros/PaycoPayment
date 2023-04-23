@@ -18,7 +18,7 @@
         init: function ()
         {
             this.$target.on('submit', XF.proxy(this, 'submit'));
-            XF.loadScript('https://s3-us-west-2.amazonaws.com/epayco/v1.0/epayco.min.js', XF.proxy(this, 'postInit'));
+            XF.loadScript('https://checkout.epayco.co/epayco.min.js', XF.proxy(this, 'postInit'));
         },
 
         postInit: function()
@@ -45,7 +45,7 @@
             overlay.on('overlay:hidden', function()
             {
                 overlay.destroy();
-                delete XF.loadedScripts['https://s3-us-west-2.amazonaws.com/epayco/v1.0/epayco.min.js'];
+                delete XF.loadedScripts['https://checkout.epayco.co/epayco.min.js'];
 
                 payform.detachCardNumberInput(self.cardNumber);
                 payform.detachExpiryInput(self.cardExpiry);
