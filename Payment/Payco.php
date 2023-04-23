@@ -44,9 +44,11 @@ class Payco extends AbstractProvider
         $this->_setupPayco($paymentProfile->options);
 
         $bankList = [];
+        $test = \XF::config('enableLivePayments') ? false : true;
+
         try
         {
-            $banksListData = $this->epayco->bank->pseBank();
+            $banksListData = $this->epayco->bank->pseBank($test);
 
             if ($banksListData->success != 1)
             {
@@ -58,6 +60,7 @@ class Payco extends AbstractProvider
                 $bankList[] = (array)$bank;
             }
         } catch (\Exception $e) {
+            \XF::logError('Error while getting bank list: ' . $e->getMessage());
             $bankList = [];
         }
 
